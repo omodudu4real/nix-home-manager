@@ -3,6 +3,15 @@
 let
 
   # ------------------------------------------------------------
+  # Caelestia Shell (Non-Flake Fetch)
+  # ------------------------------------------------------------
+
+  caelestia-src = builtins.fetchGit {
+    url = "https://github.com/caelestia-dots/shell.git";
+    ref = "main";
+  };
+
+  # ------------------------------------------------------------
   # Zen Browser
   # ------------------------------------------------------------
 
@@ -16,10 +25,9 @@ let
           version = "latest";
           src = fetchurl {
             url = "https://github.com/zen-browser/desktop/releases/latest/download/zen-x86_64.AppImage";
-            hash = "sha256-NJcEhxUi4AhfO1BdYpAJSQ7vs/Bu5nqH6hBtyxOVzP4=";
+            hash = "sha256-7SosMpBmwMLR8dPXzBzWZgXTYINJwVSKYsFZJpqYiRQ="; # Updated hash
           };
         }) { };
-
 in
 {
   # ------------------------------------------------------------
@@ -81,11 +89,14 @@ in
 
 
         # ---------------------------------------
-        # Quickshell
+        # Caelestia Dependencies
         # ---------------------------------------
 
         quickshell
-
+        qt6.qtdeclarative
+        qt6.qt5compat
+        playerctl
+        socat
 
 
         # ---------------------------------------
@@ -198,10 +209,10 @@ in
 
 
   # ------------------------------------------------------------
-  # Home Manager dotfiles
+  # Home Manager dotfiles / Caelestia Shell Setup
   # ------------------------------------------------------------
 
-  home.file = { };
+  home.file.".config/caelestia".source = "${caelestia-src}";
 
 
   # ------------------------------------------------------------
